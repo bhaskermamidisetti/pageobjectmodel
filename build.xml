@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="DataDrivenJunit" default="junitreport" basedir=".">
+	
+  <property name="dir.src" value="${basedir}\src"/>
+  <property name="dir.build" value="${basedir}\build"/>
+  <property name="path" value="${basedir}\src\lib"/>
+    <property  name="testResults" value="${basedir}\TestResults"/> 
+  <property name="dir.report" value="${testResults}\testreport"/>
+	
+  <!-- Creates the output directories -->
+  <target name="clean"
+         description="Remove all generated files.">
+    <delete dir="${dir.build}"/>
+    <delete dir="${dir.report}"/>
+  </target>
+ 
+ <target name="prepare">
+    <mkdir dir="${dir.build}"/>
+    <mkdir dir="${dir.report}"/>
+  </target>
+      <path id="pathID">
+            <fileset dir="${basedir}/src/lib">
+                  <include  name="**.jar"/>
+                  </fileset>           
+            <filelist files="${basedir}/src/com/affluence/**/**.java">
+            </filelist>
+          <!--        <filelist files="${basedir}/src/com/common/**.java">
+            </filelist>-->
+      </path>
+ 
+ 
+ 
+      <target name="compile" depends="prepare"
+                            description="Compile all source code.">
+       <javac  srcdir="${dir.src}/com" includes="**/**.java" destdir="${dir.build}">
+                      <classpath  refID="pathID"/>
+                      </javac>
+                    </target>
+      <target name="jar" depends="compile">
+                    <jar destfile="${path}/app.jar" basedir="${dir.build}">
+                        <fileset dir="${basedir}/src/com">
+                                                                  <include  name="**/**.**"/>
+                                                                  </fileset>
+                        </jar>
+                    </target>
+	
+      <target name="junit" depends="jar">
+        <junit   printsummary="yes" fork="yes" >
+		<jvmarg value="-Xmx1024m"/>
+            <classpath>
+                <path refid="pathID"/>
+            </classpath>
+            <formatter type="xml"/>
+            <batchtest fork="yes" todir="${dir.report}">
+            
+                <fileset dir="${dir.src}" includes="com/**/AffTestSuite.java"/>
+            </batchtest>
+        </junit>
+    </target>
+ 
+ 
+      <target name="junitreport"  depends="junit" >
+      	
+        <junitreport  todir="${dir.report}">
+        	
+            <fileset dir="${dir.report}" includes="TEST-*.xml"/>
+        	  <report styledir="reportstyle" format="frames" todir="${dir.report}"/>
+        </junitreport>
+    </target> 
+	
+	
+
+</project>

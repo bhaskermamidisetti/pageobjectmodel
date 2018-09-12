@@ -1,0 +1,4 @@
+[0521/105433:ERROR:client_util.cc(384)] Could not get Chrome DLL version.
+[0521/105433:ERROR:client_util.cc(442)] Could not find exported function RelaunchChromeBrowserWithNewCommandLineIfNeeded
+[0521/105452:ERROR:client_util.cc(384)] Could not get Chrome DLL version.
+[0521/105452:ERROR:client_util.cc(442)] Could not find exported function RelaunchChromeBrowserWithNewCommandLineIfNeeded
